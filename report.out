@@ -1,7 +1,0 @@
-\BOOKMARK [1][-]{section.1}{Background}{}% 1
-\BOOKMARK [1][-]{section.2}{Euler-Fermat and Factoring}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Pollard's p-1 algorithmsuzuki}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Sequential implementation}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Parallel implementation}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Comparison}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{Pollard Rho}{}% 7
