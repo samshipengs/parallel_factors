@@ -115,7 +115,17 @@ we can clearly see the presence of overheads when numbers are small, and the adv
 	\centering
 	\includegraphics[width=0.7\textwidth]{figure_2.png}
 \end{figure} \\
-So we see how parallelism can be used to accelerate the prime factor, and if the parallel is done on a GPU we could certainly expect a even shorter running time. In the following section, we will introduce a different prime factor technique called Pollard Rho, and from that we shall illustrate a point when applying parallelization that sometimes it may not be important how well the parallel program is written, but how efficient the base case -- sequential implementation is.
+So we see how parallelism can be used to accelerate the prime factor, and if the parallel is done on a GPU we could certainly expect a even shorter running time. \\
+we can also compute Karp-Flatt metric:
+
+the actual speed up,\begin{equation*}
+\psi = \frac{T(seq)}{T(par)}=\frac{53.9340}{43.196838} \approx 1.25
+\end{equation*}
+then,
+\begin{equation*}
+e = \frac{\frac{1}{1.25}-\frac{1}{4}}{1-\frac{1}{4}} \approx 0.733
+\end{equation*}
+In the following section, we will introduce a different prime factor technique called Pollard Rho, and from that we shall illustrate a point when applying parallelization that sometimes it may not be important how well the parallel program is written, but how efficient the base case -- sequential implementation is.
 
 \section{Pollard Rho}
 ...
