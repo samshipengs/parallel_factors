@@ -62,7 +62,7 @@ We show this by going through a real example,\\
 so we have $p=7$, this is correct as we used $7\times17$ to create the 119 in this example.\\
 In the follwing sections we will discuss this algorithm's sequential and parallel implementation in Python. 
 \subsection{Sequential implementation}
-the pseudo-code is straight froward according to example above, see complete code in appendix A.
+the pseudo-code is straight froward according to example above, see complete code in appendix A.1.
 \begin{verbatim}
 Choose int a coprime to n
 k = 1
@@ -82,7 +82,7 @@ Total time used 53.9340159893035889 sec
 Prime factors are 53 ad 59
 \end{verbatim}
 \subsection{Parallel implementation}
-From \textit{Example} we see there are two parts of the code one can paralleliaze, in part 1) we can use multi-processes to find the coprime $a$ and 2) compute using different $k$ at the same time, after running sequential code we see that part 2) takes the most computing time, thus we will try to make part 2) parallel.\\
+From \textit{Example} we see there are two parts of the code one can paralleliaze, in part 1) we can use multi-processes to find the coprime $a$ and 2) compute using different $k$ at the same time, after running sequential code we see that part 2) takes the most computing time, thus we will try to make part 2) parallel, see complete code in Appendix A.2.\\
 The parallel jobs will be assigned to a cpu with 4 cores:
 \begin{verbatim}
 Choose int a coprime to n
@@ -146,8 +146,86 @@ So we see how parallelism can be used to accelerate the prime factor, and if the
 
 
 \newpage
-\section*{Appendix A}
-...
+\section*{Appendix A.1}
+\begin{verbatim}
+# load library
+import numpy as np
+import sys
+import time
+from fractions import gcd
+
+#Define sequential implementation of pollard p-1
+def pollard_pm1(n):
+    t1 = time.time()
+# now we find the coprime a
+a = 2
+while gcd(a, n) != 1:
+    a += 1
+t2 = time.time()
+print "Finding a took: %.10f sec" % (t2 - t1)
+print "Coprime a is: ", a
+# now look for prime factors
+def prime_factor(k):
+    L = np.math.factorial(k)
+return gcd(a**L-1, n)
+k = 1
+result = 1
+while result in [1, n]:
+    result = prime_factor(k)
+    k += 1
+t3 = time.time()
+print "Total time used %.16f sec" % (t3 - t1)
+if result in [1, n]:
+    print "Current iteration did not find prime facotr of N! or N is prime"
+else:
+    print "Prime factors are %d ad %d" % (result, n/result)
+
+# use small prime numbers for p-1: https://primes.utm.edu/lists/small/1000.txt
+N = 53*59
+pollard_pm1(N)
+\end{verbatim}
+\section*{Appendix A.2}
+\begin{verbatim}
+# load library
+import numpy as np
+import sys
+import time
+from fractions import gcd
+from multiprocessing import Pool
+
+n = 53*59
+t1 = time.time()
+# now we find the coprime a
+a = 2
+while gcd(a, n) != 1:
+    a += 1
+t2 = time.time()
+print "Finding a took: %.10f sec" % (t2 - t1)
+print "Coprime a is: ", a
+# now look for prime factors
+def prime_factor(k):
+    L = np.math.factorial(k)
+return gcd(a**L-1, n)
+k = 2
+result = 1
+p = Pool(4) # use Pool from multiprocessing, use 4 processors
+while result in [1, n]:
+    results = p.map(prime_factor, [k, k+1, k+2, k+3])
+    k += 4
+for i in results:
+    if i not in [1, n]:
+        result = i
+t3 = time.time()
+p.close()
+p.join()
+print "Total time used %.16f sec" % (t3 - t1)
+if result in [1, n]:
+print "Current iteration did not find prime facotr of N! or N is prime"
+else:
+print "Prime factors are %d ad %d" % (result, n/result)
+\end{verbatim}
+
+
 \newpage
 \begin{thebibliography}{9}
 	\bibitem{fermat} 
